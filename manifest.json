@@ -1,0 +1,27 @@
+{
+	"name": "Elden Ring Fullscreen Map",
+	"description": "This makes the map on https://eldenring.wiki.fextralife.com fullscreen.",
+	"icons": { "16": "icon16.png",
+           "48": "icon48.png",
+          "128": "icon128.png" },
+	"version": "1.0",
+	"manifest_version": 3,
+	"action": { 
+		"default_title": "Click to Fullscreen"
+	 },
+	"background": {
+		"service_worker": "background.js"
+	},
+	"permissions": ["activeTab", "scripting"],
+	"content_scripts": [
+        {
+          "matches": [
+            "https://eldenring.wiki.fextralife.com/Interactive+Map*",			
+            "https://eldenring.wiki.fextralife.com/Interactive+map*",
+            "https://eldenring.wiki.fextralife.com/interactive+Map*",			
+            "https://eldenring.wiki.fextralife.com/interactive+map*"
+          ],
+          "js": ["hidePageElements.js"]
+        }
+      ]
+}
