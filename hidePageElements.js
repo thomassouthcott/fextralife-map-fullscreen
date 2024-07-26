@@ -1,5 +1,9 @@
 {
   let idsToExclude = ["mapA","mapB","mapC"];
+  let height = isNaN(window.innerHeight) ? window.clientHeight : window.innerHeight;
+  let width = isNaN(window.innerWidth) ? window.clientWidth : window.innerWidth;
+  //  height = height - getElementHeight("#wiki-content-block > div:nth-child(6) > p");
+  height = height - 6;
 
   //Remove the sidebar
   retryDisplayNone("#sidebar-wrapper");
@@ -44,14 +48,25 @@
   retryMarginZero("#mapA > p");
   retryMarginZero("#mapB > p");
   retryMarginZero("#mapC > p");
+  retryMarginZero("#mapD > p");
   //Slow loading elements
   retryRemove("body > div.addthis-smartlayers.addthis-smartlayers-desktop");
-  retrySetDimensionsOfMap("#ximap0");
-  retrySetDimensionsOfMap("#ximap1");
-  retrySetDimensionsOfMap("#ximap2");
+  retrySetDimensionsOfMap("#ximap0", width, height);
+  retrySetDimensionsOfMap("#ximap1", width, height);
+  retrySetDimensionsOfMap("#ximap2", width, height);
+  retrySetDimensionsOfMap("#ximap3", width, height);
+  retrySetDimensionsOfMap("#page-content-wrapper", width, height);
+  //.fex-main min-width:100%;
   retryRemove("#main-content > div > br");
   retryRemove("#sub-main > br:nth-child(2)");
   retryRemove("#sub-main > br");
+  //Remove ads
+  //remove banner at top for VIP feature, ewww
+  retryRemove("#wiki-content-block > div:nth-child(6) > p");
+  retryRemove("#pw-oop-bottom_rail");
+  retryRemove("#pw-corner-ad-video");
+  retryRemove(".pw-oop-bottom_rail");
+  retryRemove(".pw-corner-ad-video");
   window.scrollTo(0, 0);
 }
 
@@ -140,10 +155,10 @@ function retryDisplayNone(selector, retriesLeft = 1000) {
 	}
 }
 
-function retrySetDimensionsOfMap(selector, retriesLeft = 1000) {
+function retrySetDimensionsOfMap(selector, width, height, retriesLeft = 1000) {
   var webElement = document.querySelector(selector);
 	if(webElement){
-		webElement.style.cssText += "width:100%;height:706px"
+		webElement.style.cssText += "min-width:" + width + "px; min-height:" + height + "px;"
 	console.log("Removed: "+selector);
 	}
 	else if(retriesLeft > 0) {
@@ -155,6 +170,14 @@ function retrySetDimensionsOfMap(selector, retriesLeft = 1000) {
 	else {
 		console.log("Not Found: "+selector);
 	}
+}
+
+function getElementHeight(selector) {
+  var element = document.querySelector(selector);
+  if(element) {
+    return element.offsetHeight;
+  }
+  return 0;
 }
 
 function generateSelector(context) {
